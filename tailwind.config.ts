@@ -10,7 +10,14 @@ const config: Config = {
 		"./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
 	],
 	theme: {
-		extend: {},
+		extend: {
+			boxShadow: {
+				'kbColumn': '0px 1px 1px #091e4240, 0px 0px 1px #091e424f',
+			},
+			flexBasis: {
+				'min-content': 'min-content',
+			}
+		},
 		screens: {
 			xs: "375px",
 			sm: "576px",

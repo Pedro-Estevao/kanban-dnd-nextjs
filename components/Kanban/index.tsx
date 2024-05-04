@@ -34,8 +34,7 @@ const Kanban = ({ kanbanData }: KanbanProps) => {
 
     return (
         <DndContext onDragEnd={onDragEnd}>
-			<h1 className="text-center mt-8 mb-3 font-bold text-[25px] ">Drag and Drop Application</h1>
-			<div className="flex gap-4 justify-between my-20 mx-4 flex-col lg:flex-row">
+			<div className="absolute -top-[2px] right-0 left-0 bottom-0 flex flex-row mb-[8px] overflow-x-auto overflow-y-hidden pb-[8px] pt-[2px] px-[6px] kb-scrollbar select-none whitespace-nowrap mix-blend-mode-unset">
 				{data.map((col, index) => (
 					<Column
 						key={`${col.id}-${index}`}

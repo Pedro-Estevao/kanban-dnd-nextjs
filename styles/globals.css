@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.mix-blend-mode-unset {
+  	mix-blend-mode: unset !important;
+}
+
+.kb-scrollbar {
+	scrollbar-color: #fff6 #00000026;
+	scrollbar-width: auto;
+	-webkit-overflow-scrolling: touch;
+	-webkit-transform: translate(0);
+}
+
+.kb-scrollbar-column {
+	-webkit-overflow-scrolling: touch;
+    -webkit-transform: translate3d(0, 0, 0);
+    scrollbar-color: #a6c5e229 #a1bdd914;
+    scrollbar-width: thin;
+}
+
+.overflow-wrap-anywhere {
+	overflow-wrap: anywhere;
+}
