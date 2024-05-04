@@ -16,7 +16,7 @@ const config: Config = {
 			},
 			flexBasis: {
 				'min-content': 'min-content',
-			}
+			},
 		},
 		screens: {
 			xs: "375px",
