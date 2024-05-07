@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { ColumnProps } from "@/@types/components";
+import { CardProps, ColumnProps } from "@/@types/components";
 import Card from "../Card";
 import { Droppable, DroppableStateSnapshot } from "@hello-pangea/dnd";
-import { Button, CardProps, Checkbox, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Link, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
+import { Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Link, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, useDisclosure } from "@nextui-org/react";
 import { AddIcon, DeleteIcon, MoreIcon } from "../Icons";
+import { categoriesCard } from "@/bin/initialData";
 
 const Column = ({
     column,
@@ -133,13 +134,43 @@ const Column = ({
                                             placeholder="Enter a title for this card..."
                                             variant="flat"
                                             autoComplete="off"
+                                            onChange={(e) => setNewCard({ ...newCard, title: e.target.value })}
                                         />
+                                        <Select
+                                            items={categoriesCard}
+                                            label="Select categories for this card"
+                                            isMultiline
+                                            selectionMode="multiple"
+                                            selectedKeys={newCard.categories}
+                                            onSelectionChange={(keys) => {
+                                                const selectedCategories = Array.from(keys).map((key) => categoriesCard[Number(key)].id);
+                                                setNewCard({ ...newCard, categories: selectedCategories });
+                                            }}
+                                            renderValue={(items) => {
+                                                return (
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {items.map((item) => (
+                                                            <Chip key={item.key} className={`block h-auto p-0 ${item.data?.color} rounded-[4px]`}>{item.data?.title}</Chip>
+                                                        ))}
+                                                    </div>
+                                                );
+                                            }}
+                                        >
+                                            {(item) => (
+                                                <SelectItem 
+                                                    key={item.id} 
+                                                    textValue={item.title.toLowerCase()}
+                                                >
+                                                    <Chip className={`block h-auto p-0 ${item.color} rounded-[4px]`}>{item.title}</Chip>
+                                                </SelectItem>
+                                            )}
+                                        </Select>
                                     </ModalBody>
                                     <ModalFooter className="flex flex-row items-center justify-between w-full">
                                         <Button color="danger" variant="flat" onPress={addCardModal.onClose}>
                                             Cancel
                                         </Button>
-                                        <Button color="primary" onPress={addCardModal.onClose}>
+                                        <Button color="primary" onPress={addCard}>
                                             Add
                                         </Button>
                                     </ModalFooter>

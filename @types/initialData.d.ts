@@ -18,3 +18,10 @@ interface InitialDataProps {
     columns: InitialDataColumnProps[];
     lastId: InitialDataLastIdProps;
 };
+
+interface CategiriesColorsCardProps {
+    id: string;
+    title: string;
+    nameColor: string;
+    color: string;
+};

@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState } from "react";
+import { categoriesCard } from "@/bin/initialData";
 import { KanbanProps } from "@/@types/components";
 import { DropResult } from "@hello-pangea/dnd";
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
+import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, useDisclosure } from "@nextui-org/react";
 import DndContext from "@/contexts/DnDContext";
 import Column from "@/components/Column";
 
@@ -96,23 +97,46 @@ const Kanban = ({ kanbanData }: KanbanProps) => {
                             <ModalContent>
                                 {modalColumn.onClose && (
                                     <>
-                                        <ModalHeader className="flex flex-col gap-1">Add column</ModalHeader>
+                                        <ModalHeader className="flex flex-col gap-1">Add list</ModalHeader>
                                         <ModalBody>
                                             <Input
                                                 color="default"
                                                 type="text"
-                                                label="Card Title"
-                                                placeholder="Enter a title for this card..."
+                                                label="List Title"
+                                                placeholder="Enter list title..."
                                                 variant="flat"
                                                 autoComplete="off"
+                                                onChange={(e) => setNewColumn({ ...newColumn, title: e.target.value })}
                                             />
+                                            <Select
+                                                label="Select list color"
+                                                // value={newColumn.columnColor}
+                                                startContent={<span className={`block w-[15px] min-w-[15px] h-[15px] ${newColumn.columnColor} rounded-[4px]`} />}
+                                            >
+                                                {categoriesCard.map((category) => (
+                                                    <SelectItem 
+                                                        key={category.id} 
+                                                        value={category.color}
+                                                        startContent={<span className={`block w-[15px] min-w-[15px] h-[15px] ${category.color} rounded-[4px]`} />}
+                                                        onPress={(e) => {
+                                                            const value = e.target.attributes.getNamedItem("value")?.value;
+                                                            
+                                                            if (value) {
+                                                                setNewColumn({ ...newColumn, columnColor: value });
+                                                            }
+                                                        }}
+                                                    >
+                                                        {category.nameColor}
+                                                    </SelectItem>
+                                                ))}
+                                            </Select>
                                         </ModalBody>
                                         <ModalFooter className="flex flex-row items-center justify-between w-full">
                                             <Button color="danger" variant="flat" onPress={modalColumn.onClose}>
                                                 Cancel
                                             </Button>
-                                            <Button 
-                                                color="primary" 
+                                            <Button
+                                                color="primary"
                                                 onPress={addColumn}
                                             >
                                                 Add

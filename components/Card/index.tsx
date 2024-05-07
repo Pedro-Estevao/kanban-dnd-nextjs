@@ -1,5 +1,5 @@
 import React from 'react';
-import { CardProps } from "@/@types/components";
+import { CardCompProps } from "@/@types/components";
 import { Draggable, DraggableStateSnapshot, DraggableStyle } from "@hello-pangea/dnd";
 import { Avatar, Chip, Tooltip } from "@nextui-org/react";
 import { CheckBoxIcon, EyeIcon, ListIcon, MessageIcon } from "../Icons";
@@ -12,7 +12,7 @@ const Card = ({
     // columnProps,
     // columnSnapshot,
     // columnIndex,
-}: CardProps) => {
+}: CardCompProps) => {
     // const [isDragging, setIsDragging] = useState(false);
     // const [prevIsDragging, setPrevIsDragging] = useState(false);
     // const [cardProps, setCardProps] = useState<CardDraggableProps>({} as CardDraggableProps);
@@ -176,8 +176,7 @@ const Card = ({
                                                     category && category.color
                                                 )} 
                                             >
-                                                <Chip 
-                                                    
+                                                <Chip
                                                     className={clsx(
                                                         "relative inline-block rounded-[4px] box-border align-middle overflow-hidden text-ellipsis whitespace-nowrap m-0 p-0 min-w-[40px] max-w-[40px] h-[8px]",
                                                         "bg-slate-500",

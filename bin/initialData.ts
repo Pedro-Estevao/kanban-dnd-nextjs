@@ -105,80 +105,95 @@ export const initialData: InitialDataProps = {
     },
 };
 
-export const categoriesCard = [
+export const categoriesCard: CategiriesColorsCardProps[] = [
     {
         id: "0",
         title: "Feature",
+        nameColor: "Slate",
         color: "bg-slate-500",
     },
     {
         id: "1",
         title: "Bug",
+        nameColor: "Gray",
         color: "bg-gray-500",
     },
     {
         id: "2",
         title: "Improvement",
+        nameColor: "Stone",
         color: "bg-stone-500",
     },
     {
         id: "3",
         title: "Technical Debt",
+        nameColor: "Red",
         color: "bg-red-500",
     },
     {
         id: "4",
         title: "Documentation",
+        nameColor: "Orange",
         color: "bg-orange-500",
     },
     {
         id: "5",
         title: "Research",
+        nameColor: "Yellow",
         color: "bg-yellow-500",
     },
     {
         id: "6",
         title: "UI/UX Design",
+        nameColor: "Lime",
         color: "bg-lime-500",
     },
     {
         id: "7",
         title: "Graphic Design",
+        nameColor: "Green",
         color: "bg-green-500",
     },
     {
         id: "8",
         title: "Interation Design",
+        nameColor: "Teal",
         color: "bg-teal-500",
     },
     {
         id: "9",
         title: "Marketing",
+        nameColor: "Cyan",
         color: "bg-cyan-500",
     },
     {
         id: "10",
         title: "Accessibility",
+        nameColor: "Sky",
         color: "bg-sky-500",
     },
     {
         id: "11",
         title: "Prototyping",
+        nameColor: "Violet",
         color: "bg-violet-500",
     },
     {
         id: "12",
         title: "Usability Testing",
+        nameColor: "Fuchsia",
         color: "bg-fuchsia-500",
     },
     {
         id: "13",
         title: "Responsive Design",
+        nameColor: "Rose",
         color: "bg-rose-500",
     },
     {
         id: "14",
         title: "Branding",
+        nameColor: "Amber",
         color: "bg-amber-500",
     }
 ];
