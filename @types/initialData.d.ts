@@ -1,8 +1,20 @@
-interface InitialDataProps {
+interface InitialDataColumnProps {
     id: string;
     title: string;
-    tasks: {
+    columnColor: string;
+    cards: {
         id: string;
         title: string;
+        categories: string[];
     }[];
+};
+
+interface InitialDataLastIdProps {
+    column: string;
+    card: string;
+};
+
+interface InitialDataProps {
+    columns: InitialDataColumnProps[];
+    lastId: InitialDataLastIdProps;
 };

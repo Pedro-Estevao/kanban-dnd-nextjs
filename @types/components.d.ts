@@ -1,4 +1,5 @@
 import { SwitchProps } from "@nextui-org/react";
+import { DraggableProvided, DraggableStateSnapshot, DroppableProvidedProps, DroppableStateSnapshot } from "@hello-pangea/dnd";
 
 interface SkeletonLoadingProps {
     numberOfElements?: number;
@@ -6,24 +7,31 @@ interface SkeletonLoadingProps {
 }
 
 interface KanbanProps {
-    kanbanData: InitialDataProps[];
+    kanbanData: InitialDataProps;
 }
 
-interface TaskProps {
-    task: {
+interface CardProps {
+    card: {
         id: string;
         title: string;
+        categories: string[];
     };
     index: number;
+    // columnProps: DroppableProvidedProps;
+    // columnSnapshot: DroppableStateSnapshot;
+    // columnIndex: number;
+}
+
+interface CardDraggableProps {
+    provided: DraggableProvided;
+    snapshot: DraggableStateSnapshot;
 }
 
 type ColumnProps = {
-    tasks: {
-        id: string;
-        title: string;
-    }[];
-    title: string;
+    column: InitialDataColumnProps;
+    lastId: InitialDataLastIdProps;
     index: number;
+    removeColumn: (columnId: string) => void;
 }
 
 interface ThemeSwitchProps {
