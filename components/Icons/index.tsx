@@ -235,3 +235,124 @@ export const LinkedInIcon: React.FC<IconSvgProps> = ({
 		</svg>
 	);
 };
+
+export const MoreIcon: React.FC<IconSvgProps> = ({
+	size = 24,
+	width,
+	height,
+	...props
+}) => {
+	return (
+		<svg
+			height={size || height}
+			viewBox="0 0 24 24"
+			width={size || width}
+			{...props}
+		>
+			<path
+				clip-rule="evenodd"
+				d="M5 14C6.10457 14 7 13.1046 7 12C7 10.8954 6.10457 10 5 10C3.89543 10 3 10.8954 3 12C3 13.1046 3.89543 14 5 14ZM12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14ZM21 12C21 13.1046 20.1046 14 19 14C17.8954 14 17 13.1046 17 12C17 10.8954 17.8954 10 19 10C20.1046 10 21 10.8954 21 12Z"
+				fill="currentColor"
+				fillRule="evenodd"
+			/>
+		</svg>
+	);
+};
+
+export const DeleteIcon: React.FC<IconSvgProps> = ({
+	size = 24,
+	width,
+	height,
+	...props
+}) => {
+	return (
+		// <svg
+		// 	height={size || height}
+		// 	viewBox="0 0 20 20"
+		// 	width={size || width}
+		// 	// aria-hidden="true" fill="none" focusable="false" height="1em" role="presentation" viewBox="0 0 20 20" width="1em"
+		// 	{...props}
+		// >
+		// 	<path
+		// 		d="M17.5 4.98332C14.725 4.70832 11.9333 4.56665 9.15 4.56665C7.5 4.56665 5.85 4.64998 4.2 4.81665L2.5 4.98332"
+		// 		stroke="currentColor"
+		// 		strokeLinecap="round"
+		// 		strokeLinejoin="round"
+		// 		strokeWidth={1.5}
+		// 	/>
+		// 	<path
+		// 		d="M7.08331 4.14169L7.26665 3.05002C7.39998 2.25835 7.49998 1.66669 8.90831 1.66669H11.0916C12.5 1.66669 12.6083 2.29169 12.7333 3.05835L12.9166 4.14169"
+		// 		stroke="currentColor"
+		// 		strokeLinecap="round"
+		// 		strokeLinejoin="round"
+		// 		strokeWidth={1.5}
+		// 	/>
+		// 	<path
+		// 		d="M15.7084 7.61664L15.1667 16.0083C15.075 17.3166 15 18.3333 12.675 18.3333H7.32502C5.00002 18.3333 4.92502 17.3166 4.83335 16.0083L4.29169 7.61664"
+		// 		stroke="currentColor"
+		// 		strokeLinecap="round"
+		// 		strokeLinejoin="round"
+		// 		strokeWidth={1.5}
+		// 	/>
+		// 	<path
+		// 		d="M8.60834 13.75H11.3833"
+		// 		stroke="currentColor"
+		// 		strokeLinecap="round"
+		// 		strokeLinejoin="round"
+		// 		strokeWidth={1.5}
+		// 	/>
+		// 	<path
+		// 		d="M7.91669 10.4167H12.0834"
+		// 		stroke="currentColor"
+		// 		strokeLinecap="round"
+		// 		strokeLinejoin="round"
+		// 		strokeWidth={1.5}
+		// 	/>
+		// </svg>
+		<svg 
+			aria-hidden="true" 
+			fill="none" 
+			focusable="false" 
+			height="1em" 
+			role="presentation" 
+			viewBox="0 0 20 20" 
+			width="1em"
+		>
+			<path 
+				d="M17.5 4.98332C14.725 4.70832 11.9333 4.56665 9.15 4.56665C7.5 4.56665 5.85 4.64998 4.2 4.81665L2.5 4.98332" 
+				stroke="currentColor" 
+				stroke-linecap="round" 
+				stroke-linejoin="round" 
+				stroke-width="1.5"
+			/>
+			<path 
+				d="M7.08331 4.14169L7.26665 3.05002C7.39998 2.25835 7.49998 1.66669 8.90831 1.66669H11.0916C12.5 1.66669 12.6083 2.29169 12.7333 3.05835L12.9166 4.14169" 
+				stroke="currentColor" 
+				stroke-linecap="round" 
+				stroke-linejoin="round" 
+				stroke-width="1.5"
+			/>
+			<path 
+				d="M15.7084 7.61664L15.1667 16.0083C15.075 17.3166 15 18.3333 12.675 18.3333H7.32502C5.00002 18.3333 4.92502 17.3166 4.83335 16.0083L4.29169 7.61664" 
+				stroke="currentColor" 
+				stroke-linecap="round" 
+				stroke-linejoin="round" 
+				stroke-width="1.5"
+			/>
+			<path 
+				d="M8.60834 13.75H11.3833" 
+				stroke="currentColor" 
+				stroke-linecap="round" 
+				stroke-linejoin="round" 
+				stroke-width="1.5"
+			/>
+			<path 
+				d="M7.91669 10.4167H12.0834" 
+				stroke="currentColor" 
+				stroke-linecap="round" 
+				stroke-linejoin="round" 
+				stroke-width="1.5"
+			/>
+		</svg>
+	);
+};
