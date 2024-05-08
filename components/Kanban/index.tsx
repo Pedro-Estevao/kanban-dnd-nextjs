@@ -28,12 +28,12 @@ const Kanban = ({ kanbanData }: KanbanProps) => {
             cards: []
         });
 
-        setData({ ...data, columns: [...newData], lastId: data.lastId });
+        setData({ ...data, columns: [...newData], lastId: { ...data.lastId, column: newColumnId } });
         setNewColumn({} as InitialDataColumnProps);
         modalColumn.onClose();
     };
 
-    const updateColumn = (columnId: string, newCards: CardProps[]) => {
+    const updateColumn = (columnId: string, newCards: CardProps[], lastIdCard: string) => {
         setData((prevData) => {
             const updatedColumns = prevData.columns.map((col) => {
                 if (col.id === columnId) {
@@ -42,21 +42,11 @@ const Kanban = ({ kanbanData }: KanbanProps) => {
                 return col;
             });
 
-            return { ...prevData, columns: updatedColumns };
+            return { ...prevData, columns: updatedColumns, lastId: { ...prevData.lastId, card: lastIdCard } };
         });
     };
 
     const removeColumn = (columnId: string) => {
-        // const newData = Array.from(data.columns);
-        // const columnIndex = newData.findIndex(x => x.id == columnId);
-        // newData.splice(columnIndex, 1);
-
-        // if (data.lastId.column === columnId) {
-        //     data.lastId.column = `${parseInt(data.lastId.column) - 1}`;
-        // }
-
-        // setData({ ...data, columns: [...newData] });
-
         setData((prevData) => {
             const updatedColumns = prevData.columns.filter((col) => col.id !== columnId);
 

@@ -6,42 +6,44 @@ import { Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, In
 import { AddIcon, DeleteIcon, MoreIcon } from "../Icons";
 import { categoriesCard } from "@/bin/initialData";
 
-// const initialState: CardInitialStateProps = {
-//     id: '',
-//     title: '',
-//     categories: [],
-//     titleIsValid: null,
-//     categoriesIsValid: null
-// };
+const initialState: CardInitialStateProps = {
+    id: '',
+    title: '',
+    categories: [],
+    idIsValid: null,
+    titleIsValid: null,
+    categoriesIsValid: null
+};
 
-// type Action =
-//     | { type: 'setId'; payload: string; isValid?: boolean; }
-//     | { type: 'setTitle'; payload: string; isValid?: boolean; }
-//     | { type: 'setCategories'; payload: string[]; isValid?: boolean; };
+type Action =
+    | { type: 'setId'; payload: string; isValid?: boolean; }
+    | { type: 'setTitle'; payload: string; isValid?: boolean; }
+    | { type: 'setCategories'; payload: string[]; isValid?: boolean; };
 
-// const reducer = (state: CardInitialStateProps, action: Action): CardInitialStateProps => {
-//     switch (action.type) {
-//         case 'setId':
-//             return {
-//                 ...state,
-//                 id: action.payload,
-//             };
-//         case 'setTitle':
-//             return {
-//                 ...state,
-//                 title: action.payload,
-//                 titleIsValid: action.isValid ? action.isValid : null
-//             };
-//         case 'setCategories':
-//             return {
-//                 ...state,
-//                 categories: action.payload,
-//                 categoriesIsValid: action.isValid ? action.isValid : null
-//             };
-//         default:
-//             return state;
-//     }
-// };
+const reducer = (state: CardInitialStateProps, action: Action): CardInitialStateProps => {
+    switch (action.type) {
+        case 'setId':
+            return {
+                ...state,
+                id: action.payload,
+                idIsValid: action.isValid ?? null
+            };
+        case 'setTitle':
+            return {
+                ...state,
+                title: action.payload,
+                titleIsValid: action.isValid ?? null
+            };
+        case 'setCategories':
+            return {
+                ...state,
+                categories: action.payload,
+                categoriesIsValid: action.isValid ?? null
+            };
+        default:
+            return state;
+    }
+};
 
 const Column = ({
     column,
@@ -51,8 +53,7 @@ const Column = ({
     removeColumn,
 }: ColumnProps) => {
     const addCardModal = useDisclosure();
-    // const [state, dispatch] = useReducer(reducer, initialState);
-    const [newCard, setNewCard] = useState<CardProps>({} as CardProps);
+    const [state, dispatch] = useReducer(reducer, initialState);
 
     const getListStyle = (snapshot: DroppableStateSnapshot) => {
         if (!snapshot.isDraggingOver) {
@@ -65,39 +66,24 @@ const Column = ({
     };
 
     const addCard = () => {
-        // if (!state.title) {
-        //     dispatch({ type: 'setTitle', payload: state.title, isValid: false });
-        //     return;
-        // }
+        if (!state.title || state.title === "") {
+            dispatch({ type: 'setTitle', payload: state.title, isValid: false });
+            return;
+        }
 
-        // if (state.categories.length === 0) {
-        //     dispatch({ type: 'setCategories', payload: state.categories, isValid: false });
-        //     return;
-        // }
+        if (state.categories.length === 0) {
+            dispatch({ type: 'setCategories', payload: state.categories, isValid: false });
+            return;
+        }
 
-        if  (!newCard || newCard.title === "" || newCard.categories.length === 0) return;
+        const newId = `${parseInt(lastId.card) + 1}`;
 
-        // const newData = Array.from(column.cards);
-        const newCardId = `${parseInt(lastId.card) + 1}`;
-        const updatedCards = [...column.cards, { ...newCard, id: newCardId }];
-
-        updateColumn(column.id, updatedCards);
-
-        // setNewCard({ ...newCard, id: newCardId });
-
-        // dispatch({ type: "setId", payload: newCardId });
-
-        // newData.push({
-        //     id: newCardId,
-        //     title: newCard.title,
-        //     categories: newCard.categories
-        // });
-
+        const updatedCards = [...column.cards, { id: newId, title: state.title, categories: state.categories }];
         
+        updateColumn(column.id, updatedCards, newId);
 
-        setNewCard({} as CardProps);
-        // dispatch({ type: 'setTitle', payload: '', isValid: false });
-        // dispatch({ type: 'setCategories', payload: [], isValid: false });
+        dispatch({ type: 'setTitle', payload: '', isValid: undefined });
+        dispatch({ type: 'setCategories', payload: [], isValid: undefined });
         addCardModal.onClose();
     };
 
@@ -193,27 +179,27 @@ const Column = ({
                                             variant="flat"
                                             autoComplete="off"
                                             isRequired
-                                            // isInvalid={!state.titleIsValid}
+                                            isInvalid={state.titleIsValid === false}
                                             errorMessage={"Please enter a name for this card."}
-                                            onChange={(e) => setNewCard({ ...newCard, title: e.target.value })}
-                                            // onChange={(e) => dispatch({ type: 'setTitle', payload: e.target.value, isValid: true })}
+                                            // onChange={(e) => setNewCard({ ...newCard, title: e.target.value })}
+                                            onChange={(e) => dispatch({ type: 'setTitle', payload: e.target.value, isValid: true })}
                                         />
                                         <Select
                                             items={categoriesCard}
                                             label="Select categories for this card"
                                             isMultiline
                                             isRequired
-                                            // isInvalid={!state.categoriesIsValid}
+                                            isInvalid={state.categoriesIsValid === false}
                                             errorMessage={"Please select at least one category."}
                                             selectionMode="multiple"
-                                            onSelectionChange={(keys) => {
-                                                const selectedCategories = Array.from(keys).map((key) => categoriesCard[Number(key)].id);
-                                                setNewCard({ ...newCard, categories: selectedCategories });
-                                            }}
                                             // onSelectionChange={(keys) => {
                                             //     const selectedCategories = Array.from(keys).map((key) => categoriesCard[Number(key)].id);
-                                            //     dispatch({ type: 'setCategories', payload: selectedCategories, isValid: true });
+                                            //     setNewCard({ ...newCard, categories: selectedCategories });
                                             // }}
+                                            onSelectionChange={(keys) => {
+                                                const selectedCategories = Array.from(keys).map((key) => categoriesCard[Number(key)].id);
+                                                dispatch({ type: 'setCategories', payload: selectedCategories, isValid: true });
+                                            }}
                                             renderValue={(items) => {
                                                 return (
                                                     <div className="flex flex-wrap gap-2">

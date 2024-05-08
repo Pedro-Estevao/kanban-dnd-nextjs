@@ -20,6 +20,7 @@ interface CardInitialStateProps {
     id: string;
     title: string;
     categories: string[];
+    idIsValid: boolean | null;
     titleIsValid: boolean | null;
     categoriesIsValid: boolean | null;
 };
@@ -41,7 +42,7 @@ type ColumnProps = {
     column: InitialDataColumnProps;
     lastId: InitialDataLastIdProps;
     index: number;
-    updateColumn: (columnId: string, newCards: CardProps[]) => void;
+    updateColumn: (columnId: string, newCards: CardProps[], lastIdCard: string) => void;
     removeColumn: (columnId: string) => void;
 };
 
