@@ -16,6 +16,14 @@ interface CardProps {
     categories: string[];
 };
 
+interface CardInitialStateProps {
+    id: string;
+    title: string;
+    categories: string[];
+    titleIsValid: boolean | null;
+    categoriesIsValid: boolean | null;
+};
+
 interface CardCompProps {
     card: CardProps;
     index: number;
@@ -33,6 +41,7 @@ type ColumnProps = {
     column: InitialDataColumnProps;
     lastId: InitialDataLastIdProps;
     index: number;
+    updateColumn: (columnId: string, newCards: CardProps[]) => void;
     removeColumn: (columnId: string) => void;
 };
 

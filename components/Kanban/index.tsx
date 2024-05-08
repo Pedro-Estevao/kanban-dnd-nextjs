@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { categoriesCard } from "@/bin/initialData";
-import { KanbanProps } from "@/@types/components";
+import { CardProps, KanbanProps } from "@/@types/components";
 import { DropResult } from "@hello-pangea/dnd";
 import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, useDisclosure } from "@nextui-org/react";
 import DndContext from "@/contexts/DnDContext";
@@ -33,16 +33,37 @@ const Kanban = ({ kanbanData }: KanbanProps) => {
         modalColumn.onClose();
     };
 
+    const updateColumn = (columnId: string, newCards: CardProps[]) => {
+        setData((prevData) => {
+            const updatedColumns = prevData.columns.map((col) => {
+                if (col.id === columnId) {
+                    return { ...col, cards: newCards };
+                }
+                return col;
+            });
+
+            return { ...prevData, columns: updatedColumns };
+        });
+    };
+
     const removeColumn = (columnId: string) => {
-        const newData = Array.from(data.columns);
-        const columnIndex = newData.findIndex(x => x.id == columnId);
-        newData.splice(columnIndex, 1);
+        // const newData = Array.from(data.columns);
+        // const columnIndex = newData.findIndex(x => x.id == columnId);
+        // newData.splice(columnIndex, 1);
 
-        if (data.lastId.column === columnId) {
-            data.lastId.column = `${parseInt(data.lastId.column) - 1}`;
-        }
+        // if (data.lastId.column === columnId) {
+        //     data.lastId.column = `${parseInt(data.lastId.column) - 1}`;
+        // }
 
-        setData({ ...data, columns: [...newData] });
+        // setData({ ...data, columns: [...newData] });
+
+        setData((prevData) => {
+            const updatedColumns = prevData.columns.filter((col) => col.id !== columnId);
+
+            const recalculatedColumns = updatedColumns.map((col, index) => ({ ...col, id: `${index}` }));
+
+            return { ...prevData, columns: recalculatedColumns };
+        });
     };
 
     const onDragEnd = (result: DropResult) => {
@@ -52,19 +73,37 @@ const Kanban = ({ kanbanData }: KanbanProps) => {
             return;
         }
 
-        if (source.droppableId !== destination.droppableId) {
-            const newData = Array.from(data.columns);
-            const oldDroppableIndex = newData.findIndex(x => x.id == source.droppableId.split("droppable")[1]);
-            const newDroppableIndex = newData.findIndex(x => x.id == destination.droppableId.split("droppable")[1])
+        // if (source.droppableId !== destination.droppableId) {
+        //     const newData = Array.from(data.columns);
+        //     const oldDroppableIndex = newData.findIndex(x => x.id == source.droppableId.split("droppable")[1]);
+        //     const newDroppableIndex = newData.findIndex(x => x.id == destination.droppableId.split("droppable")[1])
+        //     const [item] = newData[oldDroppableIndex].cards.splice(source.index, 1);
+        //     newData[newDroppableIndex].cards.splice(destination.index, 0, item);
+        //     setData({ ...data, columns: [...newData] });
+        // } else {
+        //     const newData = Array.from(data.columns);
+        //     const droppableIndex = newData.findIndex(x => x.id == source.droppableId.split("droppable")[1]);
+        //     const [item] = newData[droppableIndex].cards.splice(source.index, 1);
+        //     newData[droppableIndex].cards.splice(destination.index, 0, item);
+        //     setData({ ...data, columns: [...newData] });
+        // }
+
+        const newData = Array.from(data.columns);
+        const oldDroppableIndex = newData.findIndex(x => x.id == source.droppableId.split("droppable")[1]);
+        const newDroppableIndex = newData.findIndex(x => x.id == destination.droppableId.split("droppable")[1]);
+
+        if (newData[oldDroppableIndex] && newData[newDroppableIndex]) {
             const [item] = newData[oldDroppableIndex].cards.splice(source.index, 1);
             newData[newDroppableIndex].cards.splice(destination.index, 0, item);
             setData({ ...data, columns: [...newData] });
         } else {
-            const newData = Array.from(data.columns);
             const droppableIndex = newData.findIndex(x => x.id == source.droppableId.split("droppable")[1]);
-            const [item] = newData[droppableIndex].cards.splice(source.index, 1);
-            newData[droppableIndex].cards.splice(destination.index, 0, item);
-            setData({ ...data, columns: [...newData] });
+
+            if (newData[droppableIndex]) {
+                const [item] = newData[droppableIndex].cards.splice(source.index, 1);
+                newData[droppableIndex].cards.splice(destination.index, 0, item);
+                setData({ ...data, columns: [...newData] });
+            }
         }
     };
 
@@ -77,6 +116,7 @@ const Kanban = ({ kanbanData }: KanbanProps) => {
                         column={col}
                         lastId={data.lastId}
                         index={index}
+                        updateColumn={updateColumn}
                         removeColumn={removeColumn}
                     />
                 ))}
@@ -114,13 +154,13 @@ const Kanban = ({ kanbanData }: KanbanProps) => {
                                                 startContent={<span className={`block w-[15px] min-w-[15px] h-[15px] ${newColumn.columnColor} rounded-[4px]`} />}
                                             >
                                                 {categoriesCard.map((category) => (
-                                                    <SelectItem 
-                                                        key={category.id} 
+                                                    <SelectItem
+                                                        key={category.id}
                                                         value={category.color}
                                                         startContent={<span className={`block w-[15px] min-w-[15px] h-[15px] ${category.color} rounded-[4px]`} />}
                                                         onPress={(e) => {
                                                             const value = e.target.attributes.getNamedItem("value")?.value;
-                                                            
+
                                                             if (value) {
                                                                 setNewColumn({ ...newColumn, columnColor: value });
                                                             }

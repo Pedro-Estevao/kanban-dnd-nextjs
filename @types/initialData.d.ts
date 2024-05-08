@@ -1,3 +1,7 @@
+interface InitialDataCardProps {
+    
+};
+
 interface InitialDataColumnProps {
     id: string;
     title: string;
