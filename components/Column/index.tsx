@@ -120,10 +120,11 @@ const Column = ({
                         </Dropdown>
                     </div>
                 </div>
-                <Droppable droppableId={`droppable${index}`} type="list" direction="vertical">
+                
+                <Droppable droppableId={`droppable${index}`} >
                     {(provided, snapshot) => (
                         <div
-                            className="kb-column__content flex flex-col flex-auto my-0 mx-[4px] py-0 px-[5px] h-full min-h-[10px] overflow-x-auto overflow-y-auto kb-scrollbar-column mix-blend-mode-unset"
+                            className="kb-column__content flex flex-col flex-auto my-0 mx-[4px] py-0 px-[5px] h-full min-h-[10px] overflow-x-hidden overflow-y-auto kb-scrollbar-column mix-blend-mode-unset"
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                             style={{
