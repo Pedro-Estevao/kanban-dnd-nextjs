@@ -39,6 +39,12 @@ type CardPrimitiveProps = {
     classNameContent?: string
 }
 
+type IsDraggingProps = {
+    active: boolean;
+    width: number;
+    height: number;
+}
+
 const CardPrimitive = forwardRef<HTMLDivElement, CardPrimitiveProps>(
     function CardPrimitive({ item, state, classNameContainer, classNameContent }, ref) {
         const { avatarUrl, name, role, userId } = item;
@@ -128,36 +134,17 @@ const CardPrimitive = forwardRef<HTMLDivElement, CardPrimitiveProps>(
             </div>
         )
     }
-)
+);
 
 export const Card = memo(function Card({ item }: { item: Person }) {
     const ref = useRef<HTMLDivElement | null>(null);
     const { userId } = item;
     const [state, setState] = useState<DraggableState>(idleState);
-    const [size, setSize] = useState({ width: 0, height: 0 });
-
-    // useEffect(() => {
-    //     if (ref && typeof ref !== 'function' && ref.current) {
-    //         const { width, height } = ref.current.getBoundingClientRect();
-    //         setSize({ width, height });
-    //     }
-    // }, [ref]);
-
-    useEffect(() => {
-        if (state.type === 'preview') {
-            setSize({
-                width: state.rect.width,
-                height: state.rect.height,
-            });
-            console.log('state.rect.width', state.rect.width);
-            console.log('state.rect.height', state.rect.height);
-        }
-    }, [state]);
-
-    useEffect(() => {
-        console.log('ref.current.width', ref.current?.offsetWidth);
-        console.log('ref.current.height', ref.current?.offsetHeight);
-    }, []);
+    const [isDragging, setIsDragging] = useState<IsDraggingProps>({
+        active: false,
+        width: 0,
+        height: 0
+    } as IsDraggingProps);
 
     useEffect(() => {
         invariant(ref.current)
@@ -166,7 +153,7 @@ export const Card = memo(function Card({ item }: { item: Person }) {
                 element: ref.current,
                 getInitialData: () => ({ type: 'card', itemId: userId }),
                 onGenerateDragPreview: ({ location, source, nativeSetDragImage }) => {
-                    const rect = source.element.getBoundingClientRect()
+                    const rect = source.element.getBoundingClientRect();
 
                     setCustomNativeDragPreview({
                         nativeSetDragImage,
@@ -186,11 +173,29 @@ export const Card = memo(function Card({ item }: { item: Person }) {
                             setState({ type: 'preview', container, rect })
                             return () => setState(draggingState)
                         }
-                    })
+                    });
                 },
 
-                onDragStart: () => setState(draggingState),
-                onDrop: () => setState(idleState)
+                onDragStart: (args) => {
+                    setState(draggingState);
+                    console.log('Drag Start...');
+                    setIsDragging(prevState => ({ 
+                        ...prevState,
+                        active: true, 
+                        width: args.source.element.offsetWidth, 
+                        height: args.source.element.offsetHeight 
+                    }));
+                },
+                onDrop: () => {
+                    setState(idleState);
+                    console.log('Drop initial...');
+                    setIsDragging(prevState => ({ 
+                        ...prevState,
+                        active: false, 
+                        width: 0, 
+                        height: 0
+                    }));
+                }
             }),
             dropTargetForFiles({
                 element: ref.current,
@@ -201,7 +206,7 @@ export const Card = memo(function Card({ item }: { item: Person }) {
                     setState(idleState)
                 },
                 onDrop: () => {
-                    setState(idleState)
+                    setState(idleState);
                 }
             }),
             dropTargetForElements({
@@ -215,7 +220,7 @@ export const Card = memo(function Card({ item }: { item: Person }) {
                         input,
                         element,
                         allowedEdges: ['top', 'bottom']
-                    })
+                    });
                 },
                 onDragEnter: (args) => {
                     if (args.source.data.itemId === userId) {
@@ -225,7 +230,7 @@ export const Card = memo(function Card({ item }: { item: Person }) {
                     setState({
                         type: 'is-card-over',
                         closestEdge
-                    })
+                    });
                 },
                 onDrag: (args) => {
                     if (args.source.data.itemId === userId) {
@@ -244,30 +249,35 @@ export const Card = memo(function Card({ item }: { item: Person }) {
                             type: 'is-card-over',
                             closestEdge
                         }
-                    })
+                    });
                 },
-                onDragLeave: () => {
-                    setState(idleState)
+                onDragLeave: (args) => {
+                    setState(idleState);
                 },
-                onDrop: () => {
-                    setState(idleState)
+                onDrop: (args) => {
+                    setState(idleState);
+                    console.log('Drop...');
                 }
             })
         )
     }, [item, userId])
 
     return (
-        <div className="kb-card flex flex-col scroll-m-[80px] mix-blend-mode-unset">
+        <div className={`kb-card flex flex-col mb-[8px] scroll-m-[80px] mix-blend-mode-unset ${isDragging.active ? "hidden m-0" : ""}`}>
             {state.type === 'is-card-over' && state.closestEdge === "top" && (
-                <div className={`relative flex items-center justify-center w-[${size.width}px] h-[${size.height}px] rounded-[8px] bg-green-500 mb-[8px]`}>
+                <div className={`relative flex items-center justify-center w-[${isDragging.width}px] h-[${isDragging.height}px] rounded-[8px] bg-green-500 mb-[8px]`}>
                     <span>Here</span>
                 </div>
             )}
 
-            <CardPrimitive ref={ref} item={item} state={state} classNameContainer={state.type === "dragging" ? "hidden" : ""} />
+            <CardPrimitive 
+                ref={ref} 
+                item={item} 
+                state={state}
+            />
 
             {state.type === 'is-card-over' && state.closestEdge === "bottom" && (
-                <div className={`relative flex items-center justify-center w-[${ref.current?.offsetWidth}px] h-[${ref.current?.offsetHeight}px] rounded-[8px] bg-green-500 mt-[8px]`}>
+                <div className={`relative flex items-center justify-center w-[${isDragging.width}px] h-[${isDragging.height}px] rounded-[8px] bg-green-500 mt-[8px]`}>
                     <span>Here</span>
                 </div>
             )}
@@ -284,7 +294,8 @@ export const Card = memo(function Card({ item }: { item: Person }) {
                              */
                             boxSizing: 'border-box',
                             width: state.rect.width,
-                            height: state.rect.height
+                            height: state.rect.height,
+                            transform: 'rotate(4deg)',
                         }}
                     >
                         <CardPrimitive item={item} state={state} />

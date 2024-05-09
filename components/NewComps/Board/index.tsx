@@ -63,7 +63,7 @@ const Board = ({ children }: { children: ReactNode }) => {
     return (
         <div 
             ref={ref} 
-            className="mix-blend-mode-unset"
+            className="overflow-auto mix-blend-mode-unset"
         >
             <div 
                 className="kb-wrapper absolute top-0 right-0 left-0 bottom-0 flex flex-row mb-[8px] overflow-x-auto overflow-y-hidden pb-[8px] pt-[2px] px-[6px] kb-scrollbar select-none whitespace-nowrap mix-blend-mode-unset"
