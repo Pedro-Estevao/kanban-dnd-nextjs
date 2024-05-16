@@ -5,7 +5,7 @@ import { categoriesCard } from "@/bin/initialData";
 import { CardProps, KanbanProps } from "@/@types/components";
 import { DropResult } from "@hello-pangea/dnd";
 import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, useDisclosure } from "@nextui-org/react";
-import DndContext from "@/contexts/DndContext";
+import DndContext from "@/contexts/dndContext";
 import Column from "@/components/Column";
 
 const Kanban = ({ kanbanData }: KanbanProps) => {

@@ -29,6 +29,7 @@ import { Card } from '../Card'
 import { Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, useDisclosure } from "@nextui-org/react"
 import { AddIcon, DeleteIcon, MoreIcon } from "@/components/Icons"
 import { categoriesCard } from "@/bin/initialData"
+import { useAppContext } from "@/contexts/appContext"
 
 type State =
 	| { type: 'idle' }
@@ -42,12 +43,6 @@ type ColumnPrimitiveProps = {
 	state: State;
 	classNameContainer?: string;
 	classNameContent?: string;
-};
-
-type IsDraggingProps = {
-	active: boolean;
-	width: number;
-	height: number;
 };
 
 // preventing re-renders
@@ -189,11 +184,7 @@ const Column = ({ column }: { column: ColumnType }) => {
 	const cardListRef = useRef<HTMLDivElement | null>(null)
 	const scrollContainerRef = useRef<HTMLDivElement | null>(null)
 	const [state, setState] = useState<State>(idle);
-	const [isDragging, setIsDragging] = useState<IsDraggingProps>({
-        active: false,
-        width: 0,
-        height: 0
-    } as IsDraggingProps);
+    const { isDragging, setIsDragging, draggingItem, setDraggingItem } = useAppContext();
 
 	useEffect(() => {
 		invariant(columnRef.current)
@@ -239,21 +230,21 @@ const Column = ({ column }: { column: ColumnType }) => {
 				},
 				onDragStart: (args) => {
 					setState(idle);
-					setIsDragging(prevState => ({ 
-                        ...prevState,
-                        active: true, 
-                        width: args.source.element.offsetWidth, 
-                        height: args.source.element.offsetHeight 
-                    }));
+					setDraggingItem({
+                        id: columnId,
+                        type: 'card',
+                        width: args.source.element.offsetWidth,
+                        height: args.source.element.offsetHeight
+                    });
 				},
 				onDrop: () => {
 					setState(idle);
-                    setIsDragging(prevState => ({ 
-                        ...prevState,
-                        active: false, 
-                        width: 0, 
+                    setDraggingItem({
+                        id: "",
+                        type: null,
+                        width: 0,
                         height: 0
-                    }));
+                    });
 				}
 			}),
 			dropTargetForElements({
@@ -348,7 +339,7 @@ const Column = ({ column }: { column: ColumnType }) => {
 				element: scrollContainerRef.current
 			})
 		)
-	}, [columnId])
+	}, [columnId, setDraggingItem])
 
 	return (
 		<>
@@ -358,7 +349,7 @@ const Column = ({ column }: { column: ColumnType }) => {
 				</div>
 			)}
 
-			<div className={`kb-column block self-start flex-shrink-0 py-0 px-[6px] h-full whitespace-nowrap mix-blend-mode-unset ${isDragging.active ? "hidden m-0" : ""}`}>
+			<div className={`kb-column block self-start flex-shrink-0 py-0 px-[6px] h-full whitespace-nowrap mix-blend-mode-unset ${isDragging && draggingItem.type === 'column' && draggingItem.id === columnId ? "hidden m-0" : ""}`}>
 				<div
 					ref={columnRef}
 					className="relative flex flex-col justify-between bg-[#f4f4f5] dark:bg-[#d4d4d81a] overflow-hidden tap-highlight-transparent outline-none rounded-[18px] text-[#9fadbc] border-none max-h-full p-0 scroll-m-[8px] whitespace-normal w-[272px] box-border align-top mix-blend-mode-unset"

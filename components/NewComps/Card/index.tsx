@@ -21,6 +21,7 @@ import { Person } from '@/bin/data/people'
 import { Avatar, Chip, Tooltip } from "@nextui-org/react"
 import clsx from "clsx"
 import { CheckBoxIcon, EyeIcon, ListIcon, MessageIcon } from "@/components/Icons"
+import { useAppContext } from "@/contexts/appContext"
 
 type DraggableState =
     | { type: 'idle' }
@@ -37,12 +38,6 @@ type CardPrimitiveProps = {
     state: DraggableState
     classNameContainer?: string
     classNameContent?: string
-}
-
-type IsDraggingProps = {
-    active: boolean;
-    width: number;
-    height: number;
 }
 
 const CardPrimitive = forwardRef<HTMLDivElement, CardPrimitiveProps>(
@@ -140,11 +135,7 @@ export const Card = memo(function Card({ item }: { item: Person }) {
     const ref = useRef<HTMLDivElement | null>(null);
     const { userId } = item;
     const [state, setState] = useState<DraggableState>(idleState);
-    const [isDragging, setIsDragging] = useState<IsDraggingProps>({
-        active: false,
-        width: 0,
-        height: 0
-    } as IsDraggingProps);
+    const { isDragging, setIsDragging, draggingItem, setDraggingItem } = useAppContext();
 
     useEffect(() => {
         invariant(ref.current)
@@ -178,23 +169,23 @@ export const Card = memo(function Card({ item }: { item: Person }) {
 
                 onDragStart: (args) => {
                     setState(draggingState);
-                    console.log('Drag Start...');
-                    setIsDragging(prevState => ({ 
-                        ...prevState,
-                        active: true, 
-                        width: args.source.element.offsetWidth, 
-                        height: args.source.element.offsetHeight 
-                    }));
+                    setIsDragging(true);
+                    setDraggingItem({
+                        id: userId,
+                        type: 'card',
+                        width: args.source.element.offsetWidth,
+                        height: args.source.element.offsetHeight
+                    });
                 },
                 onDrop: () => {
                     setState(idleState);
-                    console.log('Drop initial...');
-                    setIsDragging(prevState => ({ 
-                        ...prevState,
-                        active: false, 
-                        width: 0, 
+                    setIsDragging(!isDragging);
+                    setDraggingItem({
+                        id: "",
+                        type: null,
+                        width: 0,
                         height: 0
-                    }));
+                    });
                 }
             }),
             dropTargetForFiles({
@@ -256,16 +247,18 @@ export const Card = memo(function Card({ item }: { item: Person }) {
                 },
                 onDrop: (args) => {
                     setState(idleState);
-                    console.log('Drop...');
                 }
             })
         )
-    }, [item, userId])
+    }, [isDragging, item, setDraggingItem, setIsDragging, userId])
 
     return (
-        <div className={`kb-card flex flex-col mb-[8px] scroll-m-[80px] mix-blend-mode-unset ${isDragging.active ? "hidden m-0" : ""}`}>
+        <div className={`kb-card flex flex-col mb-[8px] scroll-m-[80px] mix-blend-mode-unset ${isDragging && draggingItem.type === 'card' && draggingItem.id === userId ? "hidden m-0" : ""}`}>
             {state.type === 'is-card-over' && state.closestEdge === "top" && (
-                <div className={`relative flex items-center justify-center w-[${isDragging.width}px] h-[${isDragging.height}px] rounded-[8px] bg-green-500 mb-[8px]`}>
+                <div 
+                    className={`relative flex items-center justify-center rounded-[8px] bg-green-500 mb-[8px]`}
+                    style={{ width: `${draggingItem.width}px`, height: `${draggingItem.height}px` }}
+                >
                     <span>Here</span>
                 </div>
             )}
@@ -277,7 +270,10 @@ export const Card = memo(function Card({ item }: { item: Person }) {
             />
 
             {state.type === 'is-card-over' && state.closestEdge === "bottom" && (
-                <div className={`relative flex items-center justify-center w-[${isDragging.width}px] h-[${isDragging.height}px] rounded-[8px] bg-green-500 mt-[8px]`}>
+                <div 
+                    className={`relative flex items-center justify-center rounded-[8px] bg-green-500 mt-[8px]`}
+                    style={{ width: `${draggingItem.width}px`, height: `${draggingItem.height}px` }}
+                >
                     <span>Here</span>
                 </div>
             )}
