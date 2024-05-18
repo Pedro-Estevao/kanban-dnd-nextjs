@@ -4,7 +4,6 @@ import { Providers } from "./providers";
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import clsx from "clsx";
-import { Link } from "@nextui-org/react";
 import { Navbar } from "@/components/Navbar";
 
 export const metadata: Metadata = {
