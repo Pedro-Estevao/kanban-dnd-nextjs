@@ -21,6 +21,7 @@ import { siteConfig } from "@/config/site";
 import NextLink from "next/link";
 import ThemeSwitch from "@/components/ThemeSwitch";
 import {
+    CoffeeIcon,
     GithubIcon,
     HeartFilledIcon,
     LinkedInIcon,
@@ -92,7 +93,7 @@ export const Navbar = () => {
                             color="primary"
                             as="button"
                             className="transition-transform transform hover:scale-105"
-                            src="/imgs/perfil-peq.png"
+                            src="/imgs/avatars/pedro-estevao-avatar.png"
                         />
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
@@ -102,7 +103,7 @@ export const Navbar = () => {
                         </DropdownItem>
                         <DropdownItem key="settings" href={siteConfig.links.sponsor} target="_blank">
                             <div className="flex gap-2 items-center">
-                                <Image src={"/imgs/coffee.svg"} width={40} height={20} alt="Logo coffee" />
+                                <CoffeeIcon width={40} height={20} />
                                 Buy me a coffee
                             </div>
                         </DropdownItem>
@@ -126,7 +127,7 @@ export const Navbar = () => {
                             isBordered: true,
                             color: "primary",
                             size: "lg",
-                            src: "/imgs/perfil-peq.png",
+                            src: "/imgs/avatars/pedro-estevao-avatar.png",
                         }}
                         className="transition-transform"
                         description="@pedro-estevao"
@@ -139,7 +140,7 @@ export const Navbar = () => {
                             className="text-sm font-normal text-default-600 bg-default-100 w-full"
                             href={siteConfig.links.sponsor}
                             target="_blank"
-                            startContent={<Image src={"/imgs/coffee.svg"} width={40} height={20} alt="Logo coffee" />}
+                            startContent={<CoffeeIcon width={40} height={20} />}
                             variant="flat"
                         >
                             Buy me a coffee

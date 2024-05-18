@@ -1,32 +1,52 @@
 import { SwitchProps } from "@nextui-org/react";
+import { DraggableProvided, DraggableStateSnapshot, DroppableProvidedProps, DroppableStateSnapshot } from "@hello-pangea/dnd";
 
 interface SkeletonLoadingProps {
     numberOfElements?: number;
     children?: ReactNode;
-}
+};
 
 interface KanbanProps {
-    kanbanData: InitialDataProps[];
-}
+    kanbanData: InitialDataProps;
+};
 
-interface TaskProps {
-    task: {
-        id: string;
-        title: string;
-    };
+interface CardProps {
+    id: string;
+    title: string;
+    categories: string[];
+};
+
+interface CardInitialStateProps {
+    id: string;
+    title: string;
+    categories: string[];
+    idIsValid: boolean | null;
+    titleIsValid: boolean | null;
+    categoriesIsValid: boolean | null;
+};
+
+interface CardCompProps {
+    card: CardProps;
     index: number;
-}
+    // columnProps: DroppableProvidedProps;
+    // columnSnapshot: DroppableStateSnapshot;
+    // columnIndex: number;
+};
+
+interface CardDraggableProps {
+    provided: DraggableProvided;
+    snapshot: DraggableStateSnapshot;
+};
 
 type ColumnProps = {
-    tasks: {
-        id: string;
-        title: string;
-    }[];
-    title: string;
+    column: InitialDataColumnProps;
+    lastId: InitialDataLastIdProps;
     index: number;
-}
+    updateColumn: (columnId: string, newCards: CardProps[], lastIdCard: string) => void;
+    removeColumn: (columnId: string) => void;
+};
 
 interface ThemeSwitchProps {
     className?: string;
     classNames?: SwitchProps["classNames"];
-}
+};

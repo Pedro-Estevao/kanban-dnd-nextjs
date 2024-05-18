@@ -1,5 +1,5 @@
 import React from "react";
-import initialData from "@/bin/initialData";
+import { initialData } from "@/bin/initialData";
 import Kanban from "@/components/Kanban";
 
 export default function Home() {

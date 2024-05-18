@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+	--scrollbar-column-color: #4d627529 #ffffff14;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--scrollbar-column-color: #a6c5e229 #a1bdd914;
+	}
+	/* .kb-scrollbar {
+		scrollbar-color: #fff6 #00000026;
+	}
+	.kb-scrollbar-column {
+		scrollbar-color: #a6c5e229 #a1bdd914;
+	} */
+}
+
 .mix-blend-mode-unset {
   	mix-blend-mode: unset !important;
 }
@@ -13,11 +29,14 @@
 }
 .kb-scrollbar-column {
 	-webkit-overflow-scrolling: touch;
-    scrollbar-color: #a6c5e229 #a1bdd914;
+    scrollbar-color: var(--scrollbar-column-color);
     scrollbar-width: thin;
 }
+.kb-scrollbar-column-dark {
+	scrollbar-color: #a6c5e229 #a1bdd914;
+}
 
-.kb-column .kb-column__content .kb-task:last-child .kb-task__content {
+.kb-column .kb-column__content .kb-card:last-child .kb-card__content {
 	margin-bottom: 0px;
 }
 
@@ -26,8 +45,4 @@
 }
 .overflow-wrap-break-word {
 	overflow-wrap: break-word;
-}
-
-.transition-column {
-	transition: all 0.25s ease-in-out;
 }

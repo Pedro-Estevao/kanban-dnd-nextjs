@@ -33,6 +33,8 @@ const config: Config = {
 			"max-xxl": { max: "1399px" },
 		},
 	},
-	plugins: [nextui()],
+	plugins: [nextui({
+		addCommonColors: true
+	})],
 };
 export default config;
